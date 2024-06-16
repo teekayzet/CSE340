@@ -41,24 +41,31 @@ a {
 
 nav {
   width: 100%;
-  background-color: #ffffff; /* Set the background color of the nav bar */
-  display: flex; /* Use flexbox */
-  justify-content: center; /* Center the items horizontally */
+  background-color: #ffffff;
+  /* Set the background color of the nav bar */
+  display: flex;
+  /* Use flexbox */
+  justify-content: center;
+  /* Center the items horizontally */
 }
 
 ul {
-  list-style-type: none; /* Remove default list styles */
+  list-style-type: none;
+  /* Remove default list styles */
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Ensure that the list items stay within the nav bar */
+  overflow: hidden;
+  /* Ensure that the list items stay within the nav bar */
 }
 
 li {
-  float: left; /* Float the list items to create a horizontal layout */
+  float: left;
+  /* Float the list items to create a horizontal layout */
 }
 
 li a {
-  display: block; /* Make the anchor elements block-level to fill the entire width of the list item */
+  display: block;
+  /* Make the anchor elements block-level to fill the entire width of the list item */
   color: rgb(40, 107, 161);
   text-align: center;
   padding: 14px 20px;
@@ -66,7 +73,8 @@ li a {
 }
 
 li a:hover {
-  background-color: rgb(5, 30, 51); /* Change background color on hover */
+  background-color: rgb(5, 30, 51);
+  /* Change background color on hover */
 }
 
 .hero {
@@ -102,12 +110,14 @@ li a:hover {
   align-items: center;
   padding: 0;
 }
-.hero-heading{
+
+.hero-heading {
   position: absolute;
   top: 10%;
   left: 25%;
   color: #0c0036;
 }
+
 .hero-details ul li {
   margin: 5px 0;
   list-style: none;
@@ -126,6 +136,7 @@ li a:hover {
 .btn:hover {
   background-color: rgb(5, 30, 51);
 }
+
 /* Card container styles */
 .card-container {
   display: flex;
@@ -134,6 +145,7 @@ li a:hover {
   max-width: 1260px;
   margin: 0 auto;
 }
+
 ul {
   list-style-type: none;
   margin: 15px;
@@ -162,10 +174,11 @@ ul {
   list-style: none;
 }
 
-footer{
+footer {
   background-color: #a3a3a3;
   color: rgb(2, 107, 194);
 }
+
 @media screen and (max-width: 768px) {
   .card {
     flex: 1 0 calc(100% - 20px);
@@ -173,7 +186,7 @@ footer{
   }
 }
 
-.hero-heading{
+.hero-heading {
   position: absolute;
   top: 10%;
   left: 7%;
@@ -207,23 +220,28 @@ footer{
 .container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Adjust gap as needed */
-  margin: 20px; /* Add some margin around the container */
+  gap: 20px;
+  /* Adjust gap as needed */
+  margin: 20px;
+  /* Add some margin around the container */
 }
 
 .reviews,
 .upgrades {
-  flex: 1 1 100%; /* Default to full width for mobile */
+  flex: 1 1 100%;
+  /* Default to full width for mobile */
 }
 
 .upgrade-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Adjust gap between upgrade items as needed */
+  gap: 10px;
+  /* Adjust gap between upgrade items as needed */
 }
 
 .upgrade-item {
-  flex: 1 1 calc(50% - 10px); /* Two items per row with gap */
+  flex: 1 1 calc(50% - 10px);
+  /* Two items per row with gap */
   text-align: center;
 }
 
@@ -234,8 +252,10 @@ footer{
 
 /* Media query for larger screens */
 @media (min-width: 768px) {
+
   .reviews,
   .upgrades {
-    flex: 1 1 calc(50% - 20px); /* Two sections side by side */
+    flex: 1 1 calc(50% - 20px);
+    /* Two sections side by side */
   }
 }
