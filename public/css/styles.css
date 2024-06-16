@@ -1,6 +1,241 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
+/* Reset font size adjustments after orientation changes */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Apply a natural box layout model to all elements */
+* {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dark grey and pink theme */
+body {
+  background-color: #fff;
+  color: #000000;
+  font-family: "Josefin Sans", sans-serif;
+  text-align: center;
+}
+
+header,
+nav,
+main,
+footer {
+  padding: 15px;
+}
+
+header {
+  background-color: #a3a3a3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+}
+
+a {
+  color: rgb(40, 107, 161);
+  text-decoration: none;
+}
+
+nav {
+  width: 100%;
+  background-color: #ffffff; /* Set the background color of the nav bar */
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center the items horizontally */
+}
+
+ul {
+  list-style-type: none; /* Remove default list styles */
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Ensure that the list items stay within the nav bar */
+}
+
+li {
+  float: left; /* Float the list items to create a horizontal layout */
+}
+
+li a {
+  display: block; /* Make the anchor elements block-level to fill the entire width of the list item */
+  color: rgb(40, 107, 161);
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: rgb(5, 30, 51); /* Change background color on hover */
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+}
+
+.hero-details {
+  position: absolute;
+  top: 75%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(5, 30, 51, 0.507);
+  padding: 20px;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  border: #0c0036;
+  border-radius: 5px;
+}
+
+.hero-details h2 {
+  margin-top: 0;
+}
+
+.hero-details ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+.hero-heading{
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  color: #0c0036;
+}
+.hero-details ul li {
+  margin: 5px 0;
+  list-style: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(0, 140, 255);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: rgb(5, 30, 51);
+}
+/* Card container styles */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1260px;
+  margin: 0 auto;
+}
+ul {
+  list-style-type: none;
+  margin: 15px;
+}
+
+
+.card {
+  flex: 1 0 calc(33.33% - 20px);
+  margin: 0 10px 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #0c0036;
+  box-sizing: border-box;
+}
+
+.reviews ul {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  padding: 0;
+}
+
+.reviews ul li {
+  margin: 5px 0;
+  list-style: none;
+}
+
+footer{
+  background-color: #a3a3a3;
+  color: rgb(2, 107, 194);
+}
+@media screen and (max-width: 768px) {
+  .card {
+    flex: 1 0 calc(100% - 20px);
+    margin-bottom: 20px;
+  }
+}
+
+.hero-heading{
+  position: absolute;
+  top: 10%;
+  left: 7%;
+  color: #0c0036;
+}
+
+.card h2 {
+  color: #a3a3a3;
+  padding: 10px;
+  text-decoration: underline;
+}
+
+.card h3 {
+  text-decoration: overline;
+  text-align: center;
+  padding: 10px;
+  color: #a3a3a3;
+}
+
+.card p {
+  color: #a3a3a3;
+  text-align: justify;
+}
+
+.footer p {
+  color: #a3a3a3;
+  font-size: 0.9em;
+}
+
+/* Reviews and Upgrades Sections */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adjust gap as needed */
+  margin: 20px; /* Add some margin around the container */
+}
+
+.reviews,
+.upgrades {
+  flex: 1 1 100%; /* Default to full width for mobile */
+}
+
+.upgrade-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust gap between upgrade items as needed */
+}
+
+.upgrade-item {
+  flex: 1 1 calc(50% - 10px); /* Two items per row with gap */
+  text-align: center;
+}
+
+.upgrade-item img {
+  width: 70px;
+  height: auto;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+  .reviews,
+  .upgrades {
+    flex: 1 1 calc(50% - 20px); /* Two sections side by side */
+  }
 }
