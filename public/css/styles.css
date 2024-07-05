@@ -11,7 +11,7 @@ html {
   padding: 0;
 }
 
-/* Dark grey and pink theme */
+/* General body styles */
 body {
   background-color: #fff;
   color: #000000;
@@ -42,30 +42,23 @@ a {
 nav {
   width: 100%;
   background-color: #ffffff;
-  /* Set the background color of the nav bar */
   display: flex;
-  /* Use flexbox */
   justify-content: center;
-  /* Center the items horizontally */
 }
 
 ul {
   list-style-type: none;
-  /* Remove default list styles */
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* Ensure that the list items stay within the nav bar */
 }
 
 li {
   float: left;
-  /* Float the list items to create a horizontal layout */
 }
 
 li a {
   display: block;
-  /* Make the anchor elements block-level to fill the entire width of the list item */
   color: rgb(40, 107, 161);
   text-align: center;
   padding: 14px 20px;
@@ -74,9 +67,9 @@ li a {
 
 li a:hover {
   background-color: rgb(5, 30, 51);
-  /* Change background color on hover */
 }
 
+/* Hero Section */
 .hero {
   position: relative;
   width: 100%;
@@ -151,7 +144,6 @@ ul {
   margin: 15px;
 }
 
-
 .card {
   flex: 1 0 calc(33.33% - 20px);
   margin: 0 10px 30px;
@@ -221,27 +213,22 @@ footer {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  /* Adjust gap as needed */
   margin: 20px;
-  /* Add some margin around the container */
 }
 
 .reviews,
 .upgrades {
   flex: 1 1 100%;
-  /* Default to full width for mobile */
 }
 
 .upgrade-items {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  /* Adjust gap between upgrade items as needed */
 }
 
 .upgrade-item {
   flex: 1 1 calc(50% - 10px);
-  /* Two items per row with gap */
   text-align: center;
 }
 
@@ -250,12 +237,102 @@ footer {
   height: auto;
 }
 
-/* Media query for larger screens */
 @media (min-width: 768px) {
-
   .reviews,
   .upgrades {
     flex: 1 1 calc(50% - 20px);
-    /* Two sections side by side */
+  }
+}
+
+/* Vehicle Detail Page Styles */
+.vehicle-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.vehicle-detail-image {
+  flex: 1 1 40%;
+  text-align: center;
+}
+
+.vehicle-detail-image img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.vehicle-detail-content {
+  flex: 1 1 60%;
+}
+
+.vehicle-detail-content h1 {
+  color: #000;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.price-mileage {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vehicle-specs {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.vehicle-specs li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.vehicle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.vehicle-buttons button {
+  flex: 1 1 calc(50% - 10px);
+  padding: 15px;
+  background-color: #00afef;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.vehicle-buttons button:hover {
+  background-color: #008cba;
+}
+
+.contact-info {
+  font-size: 16px;
+}
+
+.contact-info p {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .vehicle-detail {
+    flex-direction: column;
+  }
+
+  .vehicle-detail-image, 
+  .vehicle-detail-content {
+    flex: 1 1 100%;
   }
 }

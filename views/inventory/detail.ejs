@@ -1,0 +1,33 @@
+<div class="vehicle-detail">
+  <div class="vehicle-detail-image">
+    <img src="<%= vehicle.inv_image %>" alt="Image of <%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+    <p>This vehicle has passed inspection by an ASE-certified technician.</p>
+    <img src="/path/to/enterprise-certified.png" alt="Enterprise Certified">
+  </div>
+  <div class="vehicle-detail-content">
+    <h1><%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %></h1>
+    <div class="price-mileage">
+      <p class="price">No-Haggle Price: $<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
+      <p class="mileage">Mileage: <%= new Intl.NumberFormat('en-US').format(vehicle.inv_miles) %> miles</p>
+    </div>
+    <ul class="vehicle-specs">
+      <li>MPG: <%= vehicle.inv_mpg %> (City/Highway)</li>
+      <li>Ext. Color: <%= vehicle.inv_color %></li>
+      <li>Int. Color: <%= vehicle.inv_int_color %></li>
+      <li>Fuel Type: <%= vehicle.inv_fuel_type %></li>
+      <li>Drivetrain: <%= vehicle.inv_drivetrain %></li>
+      <li>Transmission: <%= vehicle.inv_transmission %></li>
+      <li>VIN: <%= vehicle.inv_vin %></li>
+    </ul>
+    <div class="vehicle-buttons">
+      <button class="btn-primary">START MY PURCHASE</button>
+      <button class="btn-secondary">CONTACT US</button>
+      <button class="btn-secondary">SCHEDULE TEST DRIVE</button>
+      <button class="btn-secondary">APPLY FOR FINANCING</button>
+    </div>
+    <div class="contact-info">
+      <p>Call Us: 801-396-7886</p>
+      <p>Visit Us: [Dealership Address]</p>
+    </div>
+  </div>
+</div>
