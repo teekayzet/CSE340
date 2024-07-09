@@ -4,9 +4,6 @@
  *******************************************/
 const session = require("express-session");
 const pool = require('./database/');
-/* ***********************
- * Require Statements
- *************************/
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const env = require("dotenv").config();
@@ -16,10 +13,14 @@ const baseController = require("./controllers/baseController");
 const inventoryRoute = require('./routes/inventoryRoute');
 const accountRoute = require('./routes/accountRoute'); // New account route
 const utilities = require('./utilities/index');
+const bodyParser = require("body-parser");
 
 /* ***********************
  * Middleware
  ************************/
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -56,7 +57,7 @@ app.use((req, res, next) => {
 /* Express Error Handler */
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+  console.error(`Error at: "${req.originalUrl}":`, err);
   const message = err.status == 404 ? err.message : 'Oh no! There was a crash. Maybe try a different route?';
   res.status(err.status || 500).render("errors/error", {
     title: err.status || 'Server Error',

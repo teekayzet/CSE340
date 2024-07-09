@@ -1,17 +1,15 @@
-// Require necessary external resources
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const utils = require('../utilities/index');
-const accountController = require('../controllers/accountController'); // Ensure this path is correct
+const utilities = require("../utilities");
+const accountController = require("../controllers/accountController");
 
-// Define the "GET" route for the "My Account" link
-router.get('/login', accountController.buildLogin);
+// Route to build login view
+router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
-// Error handler middleware
-router.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
-});
+// Route to build registration view
+router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
-// Export the router
+// Route to handle registration form submission
+router.post("/register", utilities.handleErrors(accountController.registerAccount));
+
 module.exports = router;
