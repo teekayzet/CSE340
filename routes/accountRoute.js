@@ -8,7 +8,10 @@ const accountController = require("../controllers/accountController");
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
 // Route to handle login form submission
-router.post("/login", utilities.handleErrors(accountController.Login));
+// Process the login attempt
+router.post("/login", (req, res) => {
+  res.status(200).send('login process');
+});
 
 // Route to build registration view
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
