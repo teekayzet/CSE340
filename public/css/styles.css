@@ -336,3 +336,52 @@ footer {
     flex: 1 1 100%;
   }
 }
+
+/* Login Form Styles */
+.login-form {
+  max-width: 400px;
+  margin: 2em auto;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.login-form div {
+  margin-bottom: 1em;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+.login-form button {
+  padding: 0.5em 1em;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+.login-form .flash-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.login-form p {
+  text-align: center;
+}
