@@ -1,25 +1,58 @@
+const bcrypt = require("bcryptjs");
 const utilities = require("../utilities");
-const accountModel = require('../models/account-model');
+const accountModel = require("../models/account-model");
 
 /* ****************************************
-*  Deliver login view
+*  Process Login
 * *************************************** */
-async function buildLogin(req, res, next) {
+async function Login(req, res) {
+  let nav = await utilities.getNav();
+  const { account_email, account_password } = req.body;
+
+  try {
+    const accountData = await accountModel.getAccountByEmail(account_email);
+    if (accountData) {
+      const isValidPassword = await bcrypt.compare(account_password, accountData.account_password);
+      if (isValidPassword) {
+        req.session.user = accountData;
+        req.flash("notice", `Welcome back, ${accountData.account_firstname}`);
+        res.status(200).redirect("/");
+      } else {
+        req.flash("notice", "Incorrect password. Please try again.");
+        res.status(401).redirect("/account/login");
+      }
+    } else {
+      req.flash("notice", "No account found with that email address.");
+      res.status(404).redirect("/account/login");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    req.flash("notice", "Sorry, an error occurred during login.");
+    res.status(500).redirect("/account/login");
+  }
+}
+
+/* ****************************************
+*  Deliver Login view
+* *************************************** */
+async function buildLogin(req, res) {
   let nav = await utilities.getNav();
   res.render("account/login", {
     title: "Login",
     nav,
+    errors: null,
   });
 }
 
 /* ****************************************
-*  Deliver registration view
+*  Deliver Registration view
 * *************************************** */
-async function buildRegister(req, res, next) {
+async function buildRegister(req, res) {
   let nav = await utilities.getNav();
   res.render("account/register", {
     title: "Register",
     nav,
+    errors: null,
   });
 }
 
@@ -31,18 +64,16 @@ async function registerAccount(req, res) {
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
   try {
+    const hashedPassword = await bcrypt.hash(account_password, 10);
     const regResult = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
       account_email,
-      account_password
+      hashedPassword
     );
 
     if (regResult) {
-      req.flash(
-        "notice",
-        `Congratulations, you're registered ${account_firstname}. Please log in.`
-      );
+      req.flash("notice", `Congratulations, you're registered ${account_firstname}. Please log in.`);
       res.status(201).render("account/login", {
         title: "Login",
         nav,
@@ -52,16 +83,18 @@ async function registerAccount(req, res) {
       res.status(501).render("account/register", {
         title: "Registration",
         nav,
+        errors: null,
       });
     }
   } catch (error) {
-    console.error(error);
-    req.flash("notice", "An error occurred during registration.");
+    console.error("Registration error:", error);
+    req.flash("notice", "Sorry, an error occurred during registration.");
     res.status(500).render("account/register", {
       title: "Registration",
       nav,
+      errors: null,
     });
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount };
+module.exports = { buildLogin, Login, buildRegister, registerAccount };
