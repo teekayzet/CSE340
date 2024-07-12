@@ -44,4 +44,48 @@ invController.buildByVehicleId = async function (req, res, next) {
   }
 };
 
+/* ***************************
+ *  Build Management View
+ * ************************** */
+invController.buildManagementView = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav();
+    res.render('inventory/management', {
+      title: 'Inventory Management',
+      nav,
+      flash: req.flash('info')
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/* Placeholder for add classification view */
+invController.addClassificationView = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav();
+    res.render('inventory/add-classification', {
+      title: 'Add New Classification',
+      nav,
+      flash: req.flash('info')
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/* Placeholder for add inventory view */
+invController.addInventoryView = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav();
+    res.render('inventory/add-inventory', {
+      title: 'Add New Inventory',
+      nav,
+      flash: req.flash('info')
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = invController;
