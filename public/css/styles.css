@@ -461,3 +461,74 @@ footer {
   padding: 0;
   list-style: none;
 }
+/* public/css/style.css */
+
+/* Main container */
+main {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+/* Page title */
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+form {
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Flash messages */
+.flash-messages {
+  margin-bottom: 20px;
+}
+
+.flash-messages p {
+  padding: 10px;
+  margin: 0;
+  border-radius: 4px;
+}
+
+.flash-messages .error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.flash-messages .info {
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+}

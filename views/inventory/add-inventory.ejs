@@ -1,0 +1,55 @@
+<!-- views/inventory/add-inventory.ejs -->
+
+<body>
+  <h1>Add New Inventory Item</h1>
+
+  <% if (flash.error && flash.error.length > 0) { %>
+  <div class="flash-messages">
+    <% flash.error.forEach(function(msg) { %>
+    <p class="error"><%= msg %></p>
+    <% }) %>
+  </div>
+  <% } %> 
+  <% if (flash.success && flash.success.length > 0) { %>
+  <div class="flash-messages">
+    <% flash.success.forEach(function(msg) { %>
+    <p class="success"><%= msg %></p>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <form id="addInventoryForm" action="/inv/add-inventory" method="POST">
+    <div class="form-group">
+      <label for="inv_make">Make:</label>
+      <input type="text" id="inv_make" name="inv_make" required />
+    </div>
+    <div class="form-group">
+      <label for="inv_model">Model:</label>
+      <input type="text" id="inv_model" name="inv_model" required />
+    </div>
+    <div class="form-group">
+      <label for="inv_year">Year:</label>
+      <input type="number" id="inv_year" name="inv_year" required />
+    </div>
+    <div class="form-group">
+      <label for="classification_id">Classification:</label>
+      <select name="classification_id" id="classification_id" required>
+        <option value="">Choose a Classification</option>
+        <% classifications.forEach(function(classification) { %>
+          <option value="<%= classification.classification_id %>">
+            <%= classification.classification_name %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="inv_image">Image Path:</label>
+      <input type="text" id="inv_image" name="inv_image" required />
+    </div>
+    <div class="form-group">
+      <label for="inv_thumbnail">Thumbnail Path:</label>
+      <input type="text" id="inv_thumbnail" name="inv_thumbnail" required />
+    </div>
+    <button type="submit">Add Inventory Item</button>
+  </form>
+</body>

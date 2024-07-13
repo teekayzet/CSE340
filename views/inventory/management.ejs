@@ -1,10 +1,12 @@
+<!-- views/inventory/management.ejs -->
+
 <main>
   <h1>Inventory Management</h1>
 
   <!-- Flash Messages -->
-  <% if (messages().length) { %>
+  <% if (messages.length) { %>
   <ul>
-    <% messages().forEach(message => { %>
+    <% messages.forEach(message => { %>
     <li><%= message %></li>
     <% }) %>
   </ul>

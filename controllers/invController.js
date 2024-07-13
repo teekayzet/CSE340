@@ -44,6 +44,7 @@ invController.buildByVehicleId = async function (req, res, next) {
   }
 };
 
+
 /* ***************************
  *  Build Management View
  * ************************** */
@@ -53,26 +54,47 @@ invController.buildManagementView = async (req, res, next) => {
     res.render('inventory/management', {
       title: 'Inventory Management',
       nav,
-      flash: req.flash('info')
+      messages: req.flash()
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
-/* Placeholder for add classification view */
+/* ***************************
+ *  Render Add Classification View
+ * ************************** */
 invController.addClassificationView = async (req, res, next) => {
   try {
     let nav = await utilities.getNav();
     res.render('inventory/add-classification', {
       title: 'Add New Classification',
       nav,
-      flash: req.flash('info')
+      messages: req.flash(),
+      classification_name: ''
     });
   } catch (error) {
     next(error);
   }
-}
+};
+
+// Add Classification
+invController.addClassification = async (req, res, next) => {
+  const { classification_name } = req.body;
+  try {
+    const newClassification = await invModel.addClassification(classification_name);
+    if (newClassification) {
+      req.flash('info', 'Classification added successfully!');
+      res.redirect('/inv');
+    } else {
+      req.flash('error', 'Failed to add classification.');
+      res.redirect('/inv/add-classification');
+    }
+  } catch (error) {
+    req.flash('error', 'An error occurred.');
+    res.redirect('/inv/add-classification');
+  }
+};
 
 /* Placeholder for add inventory view */
 invController.addInventoryView = async (req, res, next) => {
@@ -81,11 +103,11 @@ invController.addInventoryView = async (req, res, next) => {
     res.render('inventory/add-inventory', {
       title: 'Add New Inventory',
       nav,
-      flash: req.flash('info')
+      messages: req.flash()
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 module.exports = invController;
