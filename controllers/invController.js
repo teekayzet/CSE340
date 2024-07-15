@@ -110,4 +110,106 @@ invController.addInventoryView = async (req, res, next) => {
   }
 };
 
+// Function to render the Add Inventory View
+invController.addInventoryView = async (req, res, next) => {
+  try {
+    let nav = await utilities.getNav();
+    let classifications = await utilities.buildClassificationList();
+    res.render('inventory/add-inventory', {
+      title: 'Add New Inventory',
+      nav,
+      classifications,
+      messages: req.flash()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Function to handle adding a new inventory item
+invController.addInventory = async (req, res, next) => {
+  const { inv_make, inv_model, inv_year, classification_id, inv_image, inv_thumbnail } = req.body;
+  try {
+    const newInventoryItem = await invModel.addInventoryItem({
+      inv_make,
+      inv_model,
+      inv_year,
+      classification_id,
+      inv_image,
+      inv_thumbnail
+    });
+
+    if (newInventoryItem) {
+      req.flash('success', 'Inventory item added successfully!');
+      res.redirect('/inv');
+    } else {
+      req.flash('error', 'Failed to add inventory item.');
+      res.redirect('/inv/add-inventory');
+    }
+  } catch (error) {
+    req.flash('error', 'An error occurred.');
+    res.redirect('/inv/add-inventory');
+  }
+};
+
+/* ***************************
+ * Render Add Inventory View
+ * ************************** */
+invController.addInventoryView = async (req, res, next) => {
+  try {
+    const nav = await utilities.getNav();
+    const classifications = await invModel.getClassifications();
+    res.render('inventory/add-inventory', {
+      title: 'Add New Inventory',
+      nav,
+      classifications: classifications.rows,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Add Inventory
+invController.addInventory = async (req, res, next) => {
+  const {
+    inv_make,
+    inv_model,
+    inv_year,
+    classification_id,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    inv_description
+  } = req.body;
+
+  try {
+    const newInventory = await invModel.addInventory({
+      inv_make,
+      inv_model,
+      inv_year,
+      classification_id,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      inv_description
+    });
+    if (newInventory) {
+      req.flash('info', 'Inventory item added successfully!');
+      res.redirect('/inv');
+    } else {
+      req.flash('error', 'Failed to add inventory item.');
+      res.redirect('/inv/add-inventory');
+    }
+  } catch (error) {
+    req.flash('error', 'An error occurred.');
+    res.redirect('/inv/add-inventory');
+  }
+};
+
+
 module.exports = invController;
