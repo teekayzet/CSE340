@@ -26,7 +26,8 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 );
 
-router.get("/", utilities.checkJWTToken, utilities.handleErrors(accountController.managementView));
+// Route to the account management view (protected route)
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.managementView));
 
 router.get("/accountManagement/", utilities.checkJWTToken, utilities.handleErrors(accountController.managementView));
 

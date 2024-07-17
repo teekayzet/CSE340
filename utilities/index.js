@@ -3,6 +3,16 @@ const Util = {};
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const checkLogin = (req, res, next) => {
+  if (!res.locals.accountData) {
+    req.flash("notice", "Please log in to access this page.");
+    return res.redirect("/account/login");
+  }
+  next();
+};
+
+module.exports = { checkLogin };
+
 Util.checkJWTToken = (req, res, next) => {
   if (req.cookies.jwt) {
     jwt.verify(
@@ -24,9 +34,6 @@ Util.checkJWTToken = (req, res, next) => {
   }
 };
 
-/* ************************
- * Constructs the nav HTML unordered list
- ************************** */
 Util.getNav = async function () {
   let data = await invModel.getClassifications();
   let list = "<ul>";
@@ -47,9 +54,6 @@ Util.getNav = async function () {
   return list;
 };
 
-/* **************************************
- * Build the classification view HTML
- * ************************************ */
 Util.buildClassificationGrid = async function (data) {
   let grid;
   if (data.length > 0) {
@@ -81,9 +85,6 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
-/* ****************************************
- * Build the vehicle detail view HTML
- * ************************************** */
 Util.buildVehicleDetail = function (vehicle) {
   return `
     <div class="vehicle-detail">
@@ -101,16 +102,8 @@ Util.buildVehicleDetail = function (vehicle) {
     </div>`;
 };
 
-/* ****************************************
- * Middleware For Handling Errors
- * Wrap other functions in this for 
- * General Error Handling
- **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
-/* **************************************
- * Build the classification dropdown list HTML
- * ************************************ */
 Util.buildClassificationList = async function (classification_id = null) {
   let data = await invModel.getClassifications();
   let classificationList = '<select name="classification_id" id="classificationList" required>';
@@ -125,5 +118,17 @@ Util.buildClassificationList = async function (classification_id = null) {
   classificationList += "</select>";
   return classificationList;
 };
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
 
 module.exports = Util;

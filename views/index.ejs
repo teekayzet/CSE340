@@ -1,11 +1,17 @@
 <section class="hero">
   <img
-    src="images\vehicles\delorean.jpg"
+    src="images/vehicles/delorean.jpg"
     alt="DMC Delorean"
     class="hero-image" />
   <div class="hero-heading">
     <h1>Welcome to CSE Motors</h1>
-    <%- messages() %>
+    <% if (typeof messages !== 'undefined' && messages.length > 0) { %>
+      <div class="flash-messages">
+        <% messages.forEach(message => { %>
+          <div class="flash-message"><%= message %></div>
+        <% }) %>
+      </div>
+    <% } %>
   </div>
   <div class="hero-details">
     <h2>DMC Delorean</h2>
@@ -18,7 +24,7 @@
   </div>
 </section>
 <section class="reviews">
-  <section class="container">
+  <div class="container">
     <section class="reviews">
       <h3>DMC Delorean Reviews</h3>
       <ul>
@@ -51,5 +57,5 @@
         </div>
       </div>
     </section>
-  </section>
+  </div>
 </section>
