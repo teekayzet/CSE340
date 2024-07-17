@@ -51,16 +51,17 @@ invController.buildByVehicleId = async function (req, res, next) {
 invController.buildManagementView = async (req, res, next) => {
   try {
     let nav = await utilities.getNav();
+    const classifications = await invModel.getClassifications(); // Fetch classifications
     res.render('inventory/management', {
       title: 'Inventory Management',
       nav,
+      classifications: classifications.rows, // Pass classifications to the view
       messages: req.flash()
     });
   } catch (error) {
     next(error);
   }
 };
-
 /* ***************************
  *  Render Add Classification View
  * ************************** */
@@ -211,5 +212,18 @@ invController.addInventory = async (req, res, next) => {
   }
 };
 
+/* ***************************
+ *  Return Inventory by Selected Classifications As JSON
+ * ************************** */
+invController.getInventoryByClassifications = async (req, res, next) => {
+  const classifications = req.query.classifications.split(',');
+  try {
+    const invData = await Promise.all(classifications.map(id => invModel.getInventoryByClassificationId(id)));
+    const flattenedData = invData.flat(); // Flatten the array
+    res.json(flattenedData);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = invController;

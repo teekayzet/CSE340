@@ -1,19 +1,92 @@
-<!-- views/inventory/management.ejs -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory Management</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    .classification-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Inventory Management</h1>
 
-<main>
-  <h1>Inventory Management</h1>
+    <!-- Flash Messages -->
+    <% if (messages.length) { %>
+    <ul class="messages">
+      <% messages.forEach(message => { %>
+      <li><%= message %></li>
+      <% }) %>
+    </ul>
+    <% } %>
 
-  <!-- Flash Messages -->
-  <% if (messages.length) { %>
-  <ul>
-    <% messages.forEach(message => { %>
-    <li><%= message %></li>
-    <% }) %>
-  </ul>
-  <% } %>
+    <p>
+      Select classifications from the list to see the items belonging to the
+      selected classifications.
+    </p>
 
-  <ul>
-    <li><a href="/inv/add-classification">Add New Classification</a></li>
-    <li><a href="/inv/add-inventory">Add New Inventory</a></li>
-  </ul>
-</main>
+    <!-- Display the classification list here -->
+    <form id="classificationForm">
+      <% classifications.forEach(classification => { %>
+      <div class="classification-item">
+        <label for="<%= classification.classification_id %>"
+          ><%= classification.classification_name %></label
+        >
+        <input
+          type="checkbox"
+          id="<%= classification.classification_id %>"
+          name="classifications"
+          value="<%= classification.classification_id %>"
+        />
+      </div>
+      <% }) %>
+    </form>
+
+    <button type="button" onclick="filterInventory()">Show Inventory</button>
+
+    <table id="inventoryDisplay">
+      <!-- Inventory items will be displayed here -->
+    </table>
+    <noscript>JavaScript must be enabled to use this page.</noscript>
+
+    <ul>
+      <li><a href="/inv/add-classification">Add New Classification</a></li>
+      <li><a href="/inv/add-inventory">Add New Inventory</a></li>
+    </ul>
+  </main>
+
+  <script src="/js/inventory.js"></script>
+  <script>
+    async function filterInventory() {
+      const selectedClassifications = Array.from(
+        document.querySelectorAll('input[name="classifications"]:checked')
+      ).map((checkbox) => checkbox.value);
+
+      if (selectedClassifications.length === 0) {
+        alert("Please select at least one classification.");
+        return;
+      }
+
+      // Fetch inventory based on selected classifications
+      const response = await fetch(
+        `/inv/get-inventory?classifications=${selectedClassifications.join(
+          ","
+        )}`
+      );
+      const inventoryData = await response.json();
+
+      // Display inventory in the table
+      const inventoryDisplay = document.getElementById("inventoryDisplay");
+      inventoryDisplay.innerHTML = ""; // Clear existing entries
+
+      inventoryData.forEach((item) => {
+        const row = inventoryDisplay.insertRow();
+        row.innerHTML = `<td>${item.inv_make}</td><td>${item.inv_model}</td><td>${item.inv_year}</td>`;
+      });
+    }
+  </script>
+</body>

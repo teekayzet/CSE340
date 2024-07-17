@@ -22,6 +22,9 @@ router.post("/add-classification", utilities.handleErrors(invController.addClass
 router.get("/add-inventory", utilities.handleErrors(invController.addInventoryView));
 
 // Route to handle add inventory form submission
-router.post("/add-inventory", utilities.handleErrors(invController.addInventory)); // Add this if it's not present
+router.post("/add-inventory", utilities.handleErrors(invController.addInventory));
+
+// Route to get inventory by selected classifications
+router.get('/get-inventory', utilities.handleErrors(invController.getInventoryByClassifications));
 
 module.exports = router;
