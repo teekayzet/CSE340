@@ -1,38 +1,30 @@
-<% if (messages.error && messages.error.length > 0) { %>
-  <div class="flash-message">
-    <ul>
-      <% messages.error.forEach(function(message){ %>
-        <li><%= message %></li>
-      <% }); %>
-    </ul>
-  </div>
-<% } %>
-<%- messages() %>
-<h1>
-  Log In
-</h1>
-<form class="login-form" action="/account/login" method="post">
-  <div>
-    <label for="account_email">Email</label>
-    <input type="email" id="account_email" name="account_email" required>
-  </div>
-  <div>
-    <label for="account_password">Password</label>
-    <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
-    <span>must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span> 
-    <button type="button" onclick="togglePassword()">Show/Hide Password</button>
-  </div>
-  <div>
-    <button type="submit">Login</button>
-  </div>
-</form>
+<body>
+  <!-- Render flash messages (if any) -->
+  <% if (messages.error && messages.error.length > 0) { %>
+    <div class="flash-message">
+      <ul>
+        <% messages.error.forEach(function(message){ %>
+          <li><%= message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  
+  <h1>Login</h1>
+  
+  <form class="login-form" action="/account/login" method="post">
+    <div>
+      <label for="account_email">Email</label>
+      <input type="email" id="account_email" name="account_email" required>
+    </div>
+    <div>
+      <label for="account_password">Password</label>
+      <input type="password" id="account_password" name="account_password" required>
+    </div>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+  </form>
 
-<p>Don't have an account? <a href="/account/register">Register here</a></p>
-
-  <script>
-    function togglePassword() {
-      var passwordField = document.getElementById("account_password");
-      var type = passwordField.getAttribute("type") === "password" ? "text" : "password";
-      passwordField.setAttribute("type", type);
-    }
-  </script>
+  <p>Don't have an account? <a href="/account/register">Register here</a></p>
+</body>
