@@ -31,19 +31,14 @@
 
     <!-- Display the classification list here -->
     <form id="classificationForm">
-      <% classifications.forEach(classification => { %>
-      <div class="classification-item">
-        <label for="<%= classification.classification_id %>"
-          ><%= classification.classification_name %></label
-        >
-        <input
-          type="checkbox"
-          id="<%= classification.classification_id %>"
-          name="classifications"
-          value="<%= classification.classification_id %>"
-        />
-      </div>
-      <% }) %>
+      <select id="classificationSelect" name="classifications">
+        <option value="">Select a Classification</option>
+        <% classifications.forEach(classification => { %>
+        <option value="<%= classification.classification_id %>">
+          <%= classification.classification_name %>
+        </option>
+        <% }) %>
+      </select>
     </form>
 
     <button type="button" onclick="filterInventory()">Show Inventory</button>
@@ -62,21 +57,16 @@
   <script src="/js/inventory.js"></script>
   <script>
     async function filterInventory() {
-      const selectedClassifications = Array.from(
-        document.querySelectorAll('input[name="classifications"]:checked')
-      ).map((checkbox) => checkbox.value);
+      const classificationSelect = document.getElementById('classificationSelect');
+      const selectedClassification = classificationSelect.value;
 
-      if (selectedClassifications.length === 0) {
-        alert("Please select at least one classification.");
+      if (!selectedClassification) {
+        alert("Please select a classification.");
         return;
       }
 
       // Fetch inventory based on selected classifications
-      const response = await fetch(
-        `/inv/get-inventory?classifications=${selectedClassifications.join(
-          ","
-        )}`
-      );
+      const response = await fetch(`/inv/get-inventory?classifications=${selectedClassification}`);
       const inventoryData = await response.json();
 
       // Display inventory in the table
@@ -85,7 +75,12 @@
 
       inventoryData.forEach((item) => {
         const row = inventoryDisplay.insertRow();
-        row.innerHTML = `<td>${item.inv_make}</td><td>${item.inv_model}</td><td>${item.inv_year}</td>`;
+        row.innerHTML = `
+          <td>${item.inv_make}</td>
+          <td>${item.inv_model}</td>
+          <td>${item.inv_year}</td>
+          <td><a href="/inv/edit/${item.inv_id}">Modify</a></td>
+        `;
       });
     }
   </script>

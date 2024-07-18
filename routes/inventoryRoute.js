@@ -27,4 +27,7 @@ router.post("/add-inventory", utilities.handleErrors(invController.addInventory)
 // Route to get inventory by selected classifications
 router.get('/get-inventory', utilities.handleErrors(invController.getInventoryByClassifications));
 
+// Route to render the edit inventory view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView));
+
 module.exports = router;

@@ -15,7 +15,7 @@ async function getInventoryByClassificationId(classificationId) {
     );
     return data.rows;
   } catch (error) {
-    console.error("getInventoryByClassificationId error " + error);
+    console.error("getInventoryByClassificationId error: " + error);
   }
 }
 
@@ -28,7 +28,7 @@ async function getVehicleById(vehicleId) {
     );
     return data.rows[0];
   } catch (error) {
-    console.error("getVehicleById error " + error);
+    console.error("getVehicleById error: " + error);
   }
 }
 
@@ -41,7 +41,7 @@ async function addClassification(classification_name) {
     );
     return result.rows[0];
   } catch (error) {
-    console.error("addClassification error " + error);
+    console.error("addClassification error: " + error);
     return null;
   }
 }
@@ -59,6 +59,7 @@ async function addInventory(inventory) {
     inv_color,
     inv_description
   } = inventory;
+
   try {
     const result = await pool.query(
       `INSERT INTO public.inventory 
@@ -79,9 +80,30 @@ async function addInventory(inventory) {
     );
     return result.rows[0];
   } catch (error) {
-    console.error("addInventory error " + error);
+    console.error("addInventory error: " + error);
     return null;
   }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getVehicleById, addClassification, addInventory };
+// Get inventory by ID
+async function getInventoryById(id) {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM public.inventory WHERE inv_id = $1',
+      [id]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error getting inventory by ID:', error);
+    throw error;
+  }
+}
+
+module.exports = {
+  getClassifications,
+  getInventoryByClassificationId,
+  getVehicleById,
+  addClassification,
+  addInventory,
+  getInventoryById // Export the new function
+};
