@@ -44,7 +44,6 @@ invController.buildByVehicleId = async function (req, res, next) {
   }
 };
 
-
 /* ***************************
  *  Build Management View
  * ************************** */
@@ -62,6 +61,7 @@ invController.buildManagementView = async (req, res, next) => {
     next(error);
   }
 };
+
 /* ***************************
  *  Render Add Classification View
  * ************************** */
@@ -94,62 +94,6 @@ invController.addClassification = async (req, res, next) => {
   } catch (error) {
     req.flash('error', 'An error occurred.');
     res.redirect('/inv/add-classification');
-  }
-};
-
-/* Placeholder for add inventory view */
-invController.addInventoryView = async (req, res, next) => {
-  try {
-    let nav = await utilities.getNav();
-    res.render('inventory/add-inventory', {
-      title: 'Add New Inventory',
-      nav,
-      messages: req.flash()
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Function to render the Add Inventory View
-invController.addInventoryView = async (req, res, next) => {
-  try {
-    let nav = await utilities.getNav();
-    let classifications = await utilities.buildClassificationList();
-    res.render('inventory/add-inventory', {
-      title: 'Add New Inventory',
-      nav,
-      classifications,
-      messages: req.flash()
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Function to handle adding a new inventory item
-invController.addInventory = async (req, res, next) => {
-  const { inv_make, inv_model, inv_year, classification_id, inv_image, inv_thumbnail } = req.body;
-  try {
-    const newInventoryItem = await invModel.addInventoryItem({
-      inv_make,
-      inv_model,
-      inv_year,
-      classification_id,
-      inv_image,
-      inv_thumbnail
-    });
-
-    if (newInventoryItem) {
-      req.flash('success', 'Inventory item added successfully!');
-      res.redirect('/inv');
-    } else {
-      req.flash('error', 'Failed to add inventory item.');
-      res.redirect('/inv/add-inventory');
-    }
-  } catch (error) {
-    req.flash('error', 'An error occurred.');
-    res.redirect('/inv/add-inventory');
   }
 };
 
@@ -236,9 +180,6 @@ invController.editInventoryView = async function (req, res, next) {
     const itemData = await invModel.getInventoryById(inv_id);
     const classificationSelect = await invModel.getClassifications(); // Fetch classifications directly from the model
 
-    // Log the classificationSelect to debug the data structure
-    console.log("classificationSelect:", classificationSelect);
-
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
     res.render("./inventory/edit-inventory", {
       title: "Edit " + itemName,
@@ -260,6 +201,52 @@ invController.editInventoryView = async function (req, res, next) {
   } catch (error) {
     console.error("Error building edit inventory view: ", error);
     next(error);
+  }
+};
+
+/* ***************************
+ *  Deliver Delete Inventory View
+ * ************************** */
+invController.getDeleteInventoryView = async (req, res, next) => {
+  const inv_id = parseInt(req.params.inv_id);
+  try {
+    const inventoryItem = await invModel.getInventoryById(inv_id);
+    const nav = await utilities.getNav();
+    const name = `${inventoryItem.inv_make} ${inventoryItem.inv_model}`;
+    res.render('inventory/delete-confirm', {
+      title: 'Delete ' + name,
+      nav,
+      errors: null,
+      inv_id,
+      make: inventoryItem.inv_make,
+      model: inventoryItem.inv_model,
+      year: inventoryItem.inv_year,
+      price: inventoryItem.inv_price,
+    });
+  } catch (error) {
+    console.error("Error delivering delete confirmation view: ", error);
+    next(error);
+  }
+};
+
+/* ***************************
+ *  Handle Delete Inventory
+ * ************************** */
+invController.deleteInventoryItem = async (req, res, next) => {
+  const inv_id = parseInt(req.body.inv_id);
+  try {
+    const result = await invModel.deleteInventoryItem(inv_id);
+    if (result.rowCount > 0) {
+      req.flash('success', 'Inventory item deleted successfully');
+      res.redirect('/inv');
+    } else {
+      req.flash('error', 'Failed to delete inventory item');
+      res.redirect(`/inv/delete/${inv_id}`);
+    }
+  } catch (error) {
+    console.error("Error deleting inventory item: ", error);
+    req.flash('error', 'Failed to delete inventory item');
+    res.redirect(`/inv/delete/${inv_id}`);
   }
 };
 

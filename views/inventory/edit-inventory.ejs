@@ -1,59 +1,63 @@
+
 <body>
     <main>
         <h1>Edit Inventory Item: <%= title %></h1>
+        <!-- Form to update the inventory item -->
         <form action="/inv/update" method="POST">
-            <input type="hidden" id="inv_id" name="inv_id"
-                value="<%= inv_id %>" />
+            <input type="hidden" id="inv_id" name="inv_id" value="<%= inv_id %>" />
 
             <label for="inv_make">Make:</label>
-            <input type="text" id="inv_make" name="inv_make"
-                value="<%= inv_make %>" required />
+            <input type="text" id="inv_make" name="inv_make" value="<%= inv_make %>" required />
 
             <label for="inv_model">Model:</label>
-            <input type="text" id="inv_model" name="inv_model"
-                value="<%= inv_model %>" required />
+            <input type="text" id="inv_model" name="inv_model" value="<%= inv_model %>" required />
 
             <label for="inv_year">Year:</label>
-            <input type="number" id="inv_year" name="inv_year"
-                value="<%= inv_year %>" required />
+            <input type="number" id="inv_year" name="inv_year" value="<%= inv_year %>" required />
 
             <label for="classificationList">Classification:</label>
             <select name="classification_id" id="classificationList" required>
                 <option value>Choose a Classification</option>
                 <% classificationSelect.forEach(function(classification) { %>
-                <option value="<%= classification.classification_id %>"
-                    <%=classification.classification_id === classification_id ?
-                    'selected' : '' %>>
+                <option value="<%= classification.classification_id %>" <%= classification.classification_id === classification_id ? 'selected' : '' %>>
                     <%= classification.classification_name %>
                 </option>
                 <% }) %>
             </select>
 
             <label for="inv_image">Image Path:</label>
-            <input type="url" id="inv_image" name="inv_image"
-                value="<%= inv_image %>" />
+            <input type="url" id="inv_image" name="inv_image" value="<%= inv_image %>" />
 
             <label for="inv_thumbnail">Thumbnail Path:</label>
-            <input type="url" id="inv_thumbnail" name="inv_thumbnail"
-                value="<%= inv_thumbnail %>"  />
+            <input type="url" id="inv_thumbnail" name="inv_thumbnail" value="<%= inv_thumbnail %>" />
 
             <label for="inv_price">Price:</label>
-            <input type="number" id="inv_price" name="inv_price"
-                value="<%= inv_price %>" required />
+            <input type="number" id="inv_price" name="inv_price" value="<%= inv_price %>" required />
 
             <label for="inv_miles">Miles:</label>
-            <input type="number" id="inv_miles" name="inv_miles"
-                value="<%= inv_miles %>" required />
+            <input type="number" id="inv_miles" name="inv_miles" value="<%= inv_miles %>" required />
 
             <label for="inv_color">Color:</label>
-            <input type="text" id="inv_color" name="inv_color"
-                value="<%= inv_color %>" required />
+            <input type="text" id="inv_color" name="inv_color" value="<%= inv_color %>" required />
 
             <label for="inv_description">Description:</label>
-            <textarea id="inv_description" name="inv_description"
-                required><%= inv_description %></textarea>
+            <textarea id="inv_description" name="inv_description" required><%= inv_description %></textarea>
 
             <button type="submit">Update Vehicle</button>
         </form>
+
+        <!-- Form to delete the inventory item -->
+        <form id="deleteForm" action="/inv/delete" method="POST">
+            <input type="hidden" name="inv_id" value="<%= inv_id %>" />
+            <button type="button" onclick="confirmDelete()">Delete Vehicle</button>
+        </form>
     </main>
+
+    <script>
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this inventory item?")) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
 </body>

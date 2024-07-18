@@ -30,4 +30,10 @@ router.get('/get-inventory', utilities.handleErrors(invController.getInventoryBy
 // Route to render the edit inventory view
 router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView));
 
+// Route to display delete confirmation view
+router.get('/delete/:inv_id', utilities.handleErrors(invController.getDeleteInventoryView));
+
+// Route to handle the delete request
+router.post('/delete', utilities.handleErrors(invController.deleteInventoryItem));
+
 module.exports = router;
