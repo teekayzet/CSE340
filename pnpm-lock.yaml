@@ -42,7 +42,7 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       jsonwebtoken:
-        specifier: ^9.0.2
+        specifier: ^9.0.0
         version: 9.0.2
       pg:
         specifier: ^8.8.0
