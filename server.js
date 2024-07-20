@@ -4,7 +4,7 @@ const flash = require("connect-flash");
 const expressLayouts = require("express-ejs-layouts");
 const dotenv = require("dotenv");
 const utilities = require("./utilities/index");
-const pool = require("./database/"); // Ensure to import your database connection setup
+const pool = require("./database/"); // Import your database connection setup
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
@@ -22,32 +22,35 @@ app.use(
       createTableIfMissing: true,
       pool,
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET, // Ensure this is set in your .env file
     resave: true,
     saveUninitialized: true,
     name: "sessionId",
+    cookie: { secure: process.env.NODE_ENV === 'production' } // Set secure flag in production
   })
 );
 
 // Connect flash middleware
 app.use(flash());
 
-// Custom middleware to expose flash messages to all templates
+// Cookie parser middleware
+app.use(cookieParser());
+
+// Middleware to add cookies and account_firstname to all views
 app.use((req, res, next) => {
-  res.locals.messages = req.flash();
+  res.locals.cookies = req.cookies;
+  res.locals.account_firstname = req.cookies.account_firstname || ''; // Adjust according to how you store account info
+  res.locals.messages = req.flash(); // Ensure flash messages are available in templates
   next();
 });
+
+// JWT token check middleware
+app.use(utilities.checkJWTToken);
 
 // EJS setup
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
-
-// Cookie parser middleware
-app.use(cookieParser());
-
-// JWT token check middleware
-app.use(utilities.checkJWTToken);
 
 // Routes
 const staticRoutes = require("./routes/static"); // Example static routes

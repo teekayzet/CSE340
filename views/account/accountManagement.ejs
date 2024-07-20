@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
 <body>
   <div class="container">
     <h1>Account Management</h1>
@@ -7,13 +15,23 @@
       <div class="flash-message"><%= message %></div>
       <% }) %>
     </div>
-    <% } %> <% if (errors && errors.length) { %>
+    <% } %>
+    <% if (errors && errors.length) { %>
     <div class="error-messages">
       <% errors.forEach(error => { %>
       <div class="error-message"><%= error.msg %></div>
       <% }) %>
     </div>
     <% } %>
-    <p>You're logged in.</p>
+    <p>Welcome, <%= account_firstname %>!</p>
+    <h2>Account Information</h2>
+    <p>Email: <%= account_email %></p>
+    <p><a href="/account/update-account">Update Account Information</a></p>
+    <% if (account_type === 'Employee' || account_type === 'Admin') { %>
+    <h2>Inventory Management</h2>
+    <p><a href="/inv/add-item">Add New Item</a></p>
+    <p><a href="/inv/manage-items">Manage Items</a></p>
+    <% } %>
   </div>
 </body>
+</html>

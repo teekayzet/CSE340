@@ -1,0 +1,37 @@
+<body>
+    <div class="container">
+      <h1>Update Account Information</h1>
+      <% if (messages && messages.length) { %>
+      <div class="flash-messages">
+        <% messages.forEach(message => { %>
+        <div class="flash-message"><%= message %></div>
+        <% }) %>
+      </div>
+      <% } %> <% if (errors && errors.length) { %>
+      <div class="error-messages">
+        <% errors.forEach(error => { %>
+        <div class="error-message"><%= error.msg %></div>
+        <% }) %>
+      </div>
+      <% } %>
+      <form action="/account/update-account" method="post">
+        <label for="account_firstname">First Name:</label>
+        <input type="text" id="account_firstname" name="account_firstname" value="<%= account_firstname %>">
+        <label for="account_lastname">Last Name:</label>
+        <input type="text" id="account_lastname" name="account_lastname" value="<%= account_lastname %>">
+        <label for="account_email">Email:</label>
+        <input type="email" id="account_email" name="account_email" value="<%= account_email %>">
+        <button type="submit">Update Account</button>
+      </form>
+      <h2>Change Password</h2>
+      <form action="/account/change-password" method="post">
+        <label for="current_password">Current Password:</label>
+        <input type="password" id="current_password" name="current_password">
+        <label for="new_password">New Password:</label>
+        <input type="password" id="new_password" name="new_password">
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password">
+        <button type="submit">Change Password</button>
+      </form>
+    </div>
+  </body>

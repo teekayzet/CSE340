@@ -1,11 +1,15 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const { validationResult } = require("express-validator");
 const utilities = require("../utilities");
 const accountModel = require("../models/account-model");
 
 dotenv.config();
 
+/**
+ * Handle user login.
+ */
 async function accountLogin(req, res) {
   let nav = await utilities.getNav();
   const { account_email, account_password } = req.body;
@@ -38,6 +42,9 @@ async function accountLogin(req, res) {
   }
 }
 
+/**
+ * Render login view.
+ */
 async function buildLogin(req, res) {
   let nav = await utilities.getNav();
   res.render("account/login", {
@@ -47,6 +54,9 @@ async function buildLogin(req, res) {
   });
 }
 
+/**
+ * Render registration view.
+ */
 async function buildRegister(req, res) {
   let nav = await utilities.getNav();
   res.render("account/register", {
@@ -56,6 +66,9 @@ async function buildRegister(req, res) {
   });
 }
 
+/**
+ * Handle user registration.
+ */
 async function registerAccount(req, res) {
   let nav = await utilities.getNav();
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
@@ -83,14 +96,125 @@ async function registerAccount(req, res) {
   }
 }
 
+/**
+ * Render account management view.
+ */
 async function managementView(req, res) {
   let nav = await utilities.getNav();
+  const accountData = res.locals.accountData;  // Get the account data from res.locals
+
   res.render('account/accountManagement', {
     title: 'Account Management',
     nav,
     messages: req.flash('notice'),
-    errors: null
+    errors: null,
+    account_firstname: accountData.firstName,  // Ensure these field names match
+    account_email: accountData.email,
+    account_type: accountData.type
   });
 }
 
-module.exports = { managementView, accountLogin, buildLogin, buildRegister, registerAccount };
+/**
+ * Handle account update.
+ */
+async function updateAccount(req, res) {
+  const { account_firstname, account_lastname, account_email } = req.body;
+  const account_id = req.user.account_id;  // Ensure correct user identification
+  
+  try {
+    const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
+    if (updateResult) {
+      req.flash("notice", "Account information updated successfully.");
+      res.redirect("/account/accountManagement");
+    } else {
+      req.flash("error", "Failed to update account information.");
+      res.status(400).redirect("/account/accountManagement");
+    }
+  } catch (error) {
+    console.error("Update account error:", error);
+    req.flash("error", "An error occurred while updating account information.");
+    res.status(500).redirect("/account/accountManagement");
+  }
+}
+
+/**
+ * Handle password change.
+ */
+async function changePassword(req, res) {
+  const { current_password, new_password, confirm_password } = req.body;
+  const account_id = req.user.account_id;  // Ensure correct user identification
+  
+  try {
+    const accountData = await accountModel.getAccountById(account_id);
+    if (!await bcrypt.compare(current_password, accountData.account_password)) {
+      req.flash('error', 'Current password is incorrect');
+      return res.redirect('/account/accountManagement');
+    }
+    
+    if (new_password !== confirm_password) {
+      req.flash('error', 'New passwords do not match');
+      return res.redirect('/account/accountManagement');
+    }
+    
+    const hashedNewPassword = await bcrypt.hash(new_password, 10);
+    const updateResult = await accountModel.updatePassword(account_id, hashedNewPassword);
+    if (updateResult) {
+      req.flash("notice", "Password changed successfully.");
+      res.redirect("/account/accountManagement");
+    } else {
+      req.flash("error", "Failed to change password.");
+      res.status(400).redirect("/account/accountManagement");
+    }
+  } catch (error) {
+    console.error("Change password error:", error);
+    req.flash("error", "An error occurred while changing the password.");
+    res.status(500).redirect("/account/accountManagement");
+  }
+}
+
+/**
+ * Render update account view.
+ */
+async function getUpdateAccount(req, res) {
+  res.render('account/update-account', {
+    title: 'Update Account',
+    account_firstname: req.account.account_firstname,
+    account_lastname: req.account.account_lastname,
+    account_email: req.account.account_email
+  });
+}
+
+/**
+ * Handle account update submission.
+ */
+async function postUpdateAccount(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    req.flash('error', 'Please correct the errors');
+    return res.redirect('/account/update-account');
+  }
+  
+  await updateAccount(req, res);
+}
+
+/**
+ * Handle user logout.
+ */
+async function logout(req, res) {
+  res.clearCookie('jwt');
+  req.flash('success', 'Logged out successfully');
+  res.redirect('/');
+}
+
+module.exports = { 
+  managementView, 
+  accountLogin, 
+  buildLogin, 
+  buildRegister, 
+  registerAccount, 
+  updateAccount, 
+  changePassword, 
+  getUpdateAccount, 
+  postUpdateAccount, 
+  logout 
+};

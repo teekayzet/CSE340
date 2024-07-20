@@ -1,25 +1,32 @@
 <body>
   <!-- Render flash messages (if any) -->
-  <% if (messages.error && messages.error.length > 0) { %>
-    <div class="flash-message">
-      <ul>
-        <% messages.error.forEach(function(message){ %>
-          <li><%= message %></li>
-        <% }); %>
-      </ul>
-    </div>
+  <% if (messages.notice && messages.notice.length > 0) { %>
+  <div class="flash-message">
+    <ul>
+      <% messages.notice.forEach(function(message){ %>
+      <li><%= message %></li>
+      <% }); %>
+    </ul>
+  </div>
   <% } %>
-  
+
+  <!-- Rest of the login form HTML -->
+
   <h1>Login</h1>
-  
+
   <form class="login-form" action="/account/login" method="post">
     <div>
       <label for="account_email">Email</label>
-      <input type="email" id="account_email" name="account_email" required>
+      <input type="email" id="account_email" name="account_email" required />
     </div>
     <div>
       <label for="account_password">Password</label>
-      <input type="password" id="account_password" name="account_password" required>
+      <input
+        type="password"
+        id="account_password"
+        name="account_password"
+        required
+      />
     </div>
     <div>
       <button type="submit">Login</button>
