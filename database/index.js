@@ -3,7 +3,11 @@ require("dotenv").config();
 
 let pool;
 
-// Check if we are in development or production
+// Check if DATABASE_URL is defined
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not defined");
+}
+
 if (process.env.NODE_ENV === "development") {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -29,7 +33,7 @@ if (process.env.NODE_ENV === "development") {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: process.env.DATABASE_URL.includes('render.com') ? true : false, // Set this based on your environment
+      rejectUnauthorized: process.env.DATABASE_URL.includes('render.com') ? false : true, // Set this based on your environment
     },
   });
 
