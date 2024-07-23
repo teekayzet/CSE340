@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head') %>
+<%- include('../partials/head', { title: title || 'Default Title' }) %>
 <body>
     <div id="wrapper">
         <%- include('../partials/header') %>
-        <%- include('../partials/navigation') %>
+        <%- include('../partials/navigation', { nav: nav || '' }) %> <!-- Pass nav with a default value -->
 
         <main>
             <%- body %>

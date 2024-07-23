@@ -14,6 +14,20 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+exports.getNav = async () => {
+  let data = await invModel.getClassifications();
+  let list = "<ul>";
+  list += '<li><a href="/" title="Home page">Home</a></li>';
+  data.rows.forEach((row) => {
+    list += "<li>";
+    list += `<a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles">${row.classification_name}</a>`;
+    list += "</li>";
+  });
+  list += '<li><a href="/chatbot/chatbot">Chatbot</a></li>'; // Add Chatbot link here
+  list += "</ul>";
+  return list;
+};
+
 // Middleware to check JWT token
 Util.checkJWTToken = (req, res, next) => {
   if (req.cookies.jwt) {
